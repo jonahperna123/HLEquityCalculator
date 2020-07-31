@@ -27,7 +27,7 @@ const calculate_hand_ranks = (props) => {
         full_hand.sort((a,b) => (b.rank-a.rank)); //sort array in descending order
         
         rank = get_hand_rank({full_hand: full_hand, cardOne: holeCardOne, cardTwo: holeCardTwo});
-        console.log(rank);
+
         hand_ranks.push(rank);
         
     }
@@ -55,9 +55,9 @@ const get_hand_rank = (props) => {
     } else if (check_straight({full_hand: full_hand})) {
         return 4;
     } else if (check_trips({full_hand: full_hand})) {
-        return 3;
+        return get_trips_obj({full_hand: full_hand});
     } else if (check_two_pair({full_hand: full_hand})) {
-        return 2;
+        return get_two_pair_obj({full_hand: full_hand});
     } else if (check_pair({full_hand: full_hand})) {
         return get_pair_obj({full_hand: full_hand});
     } else {
@@ -71,7 +71,7 @@ const get_high_card = (props) => {
     let full_hand = props.full_hand;
     let hand = {
         rank: 0,
-        cards: full_hand.slice(0, 5)
+        kickers: full_hand.slice(0, 5)
     };
     return hand;
 }
@@ -142,6 +142,42 @@ const check_two_pair = (props) => {
 return false;
 }
 
+const get_two_pair_obj = (props) => {
+    let full_hand = props.full_hand;
+    let card = {};
+    let num_pairs = 0;
+    for (let i = 0; i < full_hand.length; ++i) {
+        for (let j = i+1; j < full_hand.length; ++j) {
+            if (full_hand[i].rank === full_hand[j].rank) {
+                ++num_pairs;
+                if (num_pairs === 1) {
+                    card = {
+                        rank: 2,
+                        pair_rank_one: full_hand[i].rank
+                    }
+                } else if (num_pairs === 2) {
+                    card.pair_rank_two = full_hand[i].rank;
+                    
+                    for (let k = 0; k < full_hand.length; ++k) {
+                        if (full_hand[k] !== card.pair_rank_one && 
+                            full_hand[k] !== card.pair_rank_two) {
+                                card.kicker = full_hand[k];
+                                break;
+                            }
+                    }
+
+                    return card;
+                }
+                
+
+                
+            }
+        }
+    }
+    return card;
+
+}
+
 
 // Returns true if there are 3 cards of the same rank
 const check_trips = (props) => {
@@ -159,6 +195,39 @@ const check_trips = (props) => {
         }
     }
   return false;
+}
+
+const get_trips_obj = (props) => {
+    let full_hand = props.full_hand;
+    let card = {};
+
+    for (let i = 0; i < full_hand.length - 2; ++i) {
+        let num_same = 1;
+        for (let j = i+1; j < full_hand.length; ++j) {
+            if (full_hand[i].rank === full_hand[j].rank) {
+                ++num_same;
+            }
+            if (num_same === 3) {
+                let kickers = [];
+                for (let n = 0; n < full_hand.length; ++n) {
+                    if (full_hand[n].rank !== full_hand[i].rank) {
+                        kickers.push(full_hand[n]);
+                    }
+                    if (kickers.length === 2) {
+                        break;
+                    }
+                }
+                card = {
+                    rank: 3,
+                    trips_rank: full_hand[i].rank,
+                    kickers: kickers
+                };
+                return card;
+            } //if num same
+        }
+    }
+    return card;
+
 }
 
 // Returns true if there are 5 cards in a row

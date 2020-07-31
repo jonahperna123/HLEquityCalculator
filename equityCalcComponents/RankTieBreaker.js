@@ -25,7 +25,21 @@ const Rank_tie_breaker = (props) => {
     } else if (hand_rank === 3) {
         // Trips tie breaker
         return TripsTieBreaker({handOne: handOne, handTwo: handTwo});
-    }
+    } else if (hand_rank === 4) {
+        // Straight Tie breaker
+        return StraightTieBreaker({handOne: handOne, handTwo: handTwo});
+    } else if (hand_rank === 5) {
+        // Flush house tie breaker
+    } else if (hand_rank === 6) {
+        // Full house tie breaker
+    } else if (hand_rank === 7) {
+        // quads tie breaker
+    } else if (hand_rank === 8) {
+        // str flush tie breaker
+    } 
+    //Royal flush not possible
+
+
     return -1;
 }
 
@@ -117,6 +131,17 @@ const TripsTieBreaker = (props) => {
         }
     }
 
+    return -1;
+}
+
+const StraightTieBreaker = (props) => {
+    let handOne = props.handOne;
+    let handTwo = props.handTwo;
+    if (handOne.high_card > handTwo.high_card) {
+        return 1;
+    } else if (handTwo.high_card > handOne.high_card) {
+        return 2;
+    }
     return -1;
 }
 

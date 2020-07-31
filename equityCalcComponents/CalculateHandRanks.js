@@ -53,7 +53,7 @@ const get_hand_rank = (props) => {
     } else if (check_flush({full_hand: full_hand})) {
         return 5;
     } else if (check_straight({full_hand: full_hand})) {
-        return 4;
+        return get_straight_obj({full_hand: full_hand});
     } else if (check_trips({full_hand: full_hand})) {
         return get_trips_obj({full_hand: full_hand});
     } else if (check_two_pair({full_hand: full_hand})) {
@@ -240,6 +240,12 @@ const check_straight = (props) => {
             rank_set.push(full_hand[i].rank);
         }
     }
+    //if the rank set includes an Ace add -1 value so it can 
+    // be counted if the wheel is present
+    if (rank_set.includes(12)) {
+        rank_set.push(-1);
+    }
+    console.log(rank_set);
     if (rank_set.length < 5) {
         return false;
     }
@@ -249,9 +255,40 @@ const check_straight = (props) => {
             && rank_set[i+2] - 1 === rank_set[i+3]
             && rank_set[i+3] - 1 === rank_set[i+4]) {
                 return true;
+            } 
+    }
+    return false;
+}
+
+const get_straight_obj = (props) => {
+    let full_hand = props.full_hand;
+    let card = {};
+
+    let rank_set = [];
+    for (let i = 0; i < full_hand.length; ++i) {
+        if (!rank_set.includes(full_hand[i].rank)) {
+            rank_set.push(full_hand[i].rank);
+        }
+    }
+ 
+    if (rank_set.includes(12)) {
+        rank_set.push(-1);
+    }
+
+    for (let i = 0; i < full_hand.length - 4; ++i){
+        if (rank_set[i] - 1 === rank_set[i+1]
+            && rank_set[i+1] - 1 === rank_set[i+2]
+            && rank_set[i+2] - 1 === rank_set[i+3]
+            && rank_set[i+3] - 1 === rank_set[i+4]) {
+                card = {
+                    rank: 4,
+                    high_card: rank_set[i]
+                };
+                return card;
             }
     }
-    false;
+    return card;
+
 }
 
 const check_flush = (props) => {

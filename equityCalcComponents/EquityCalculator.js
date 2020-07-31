@@ -17,35 +17,35 @@ const EquityCalculator = (props) =>  {
             suit: "Spades"
         }
         let usedCardTwo = {
-            rank: "Four",
+            rank: "Two",
             suit: "Clubs"
         } 
         let usedCardThree = {
-            rank: "Two",
+            rank: "Six",
             suit: "Hearts"
         };
         let usedCardFour = {
-            rank: "Two",
+            rank: "Five",
             suit: "Diamonds",
         }
         let usedCardFive = {
-            rank: "Jack",
+            rank: "Three",
             suit: "Diamonds"
         }
         let usedCardSix = {
-            rank: "Jack",
+            rank: "Four",
             suit: "Clubs"
         }
         let usedCardSeven = {
-            rank: "Three",
+            rank: "Five",
             suit: "Hearts"
         } 
         let usedCardEight = {
-            rank: "Three",
+            rank: "Six",
             suit: "Clubs",
         } 
         let usedCardNine = {
-            rank: "Ten",
+            rank: "Seven",
             suit: "Hearts"
         }
 
@@ -59,8 +59,8 @@ const EquityCalculator = (props) =>  {
         dead_cards.push(usedCardFive);
         dead_cards.push(usedCardSix);
         dead_cards.push(usedCardSeven);
-        // dead_cards.push(usedCardEight);
-        // dead_cards.push(usedCardNine);
+        dead_cards.push(usedCardEight);
+        dead_cards.push(usedCardNine);
 
 
         for (let i = 0; i < dead_cards.length; ++i) {  
@@ -75,7 +75,7 @@ const EquityCalculator = (props) =>  {
 
         let players_win_equity = Array(num_players).fill(0);
         let players_chop_equity = Array(num_players).fill(0);
-        const SIMULATED_HANDS = 1000;
+        const SIMULATED_HANDS = 1;
 
         for (let hand = 0; hand < SIMULATED_HANDS; ++hand) {
             let shuffled_deck = removeHoleCardsAndShuffle({deck: deck, dead_cards: dead_cards});

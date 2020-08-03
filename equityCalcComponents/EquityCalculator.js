@@ -11,57 +11,9 @@ import rank_tie_breaker from './RankTieBreaker';
 
 const EquityCalculator = (props) =>  {
         let deck = props.deck;
-
-        let usedCardOne = {
-            rank: "Ace",
-            suit: "Spades"
-        }
-        let usedCardTwo = {
-            rank: "Two",
-            suit: "Clubs"
-        } 
-        let usedCardThree = {
-            rank: "Six",
-            suit: "Hearts"
-        };
-        let usedCardFour = {
-            rank: "Five",
-            suit: "Diamonds",
-        }
-        let usedCardFive = {
-            rank: "Three",
-            suit: "Diamonds"
-        }
-        let usedCardSix = {
-            rank: "Four",
-            suit: "Clubs"
-        }
-        let usedCardSeven = {
-            rank: "Five",
-            suit: "Hearts"
-        } 
-        let usedCardEight = {
-            rank: "Six",
-            suit: "Clubs",
-        } 
-        let usedCardNine = {
-            rank: "Seven",
-            suit: "Hearts"
-        }
+        let dead_cards = props.dead_cards;
 
         let num_players = 2;
-
-        let dead_cards = []
-        dead_cards.push(usedCardOne);
-        dead_cards.push(usedCardTwo);
-        dead_cards.push(usedCardThree);
-        dead_cards.push(usedCardFour);
-        dead_cards.push(usedCardFive);
-        dead_cards.push(usedCardSix);
-        dead_cards.push(usedCardSeven);
-        dead_cards.push(usedCardEight);
-        dead_cards.push(usedCardNine);
-
 
         for (let i = 0; i < dead_cards.length; ++i) {  
             dead_cards[i] = extractNumberRanks({card: dead_cards[i]});
@@ -75,7 +27,7 @@ const EquityCalculator = (props) =>  {
 
         let players_win_equity = Array(num_players).fill(0);
         let players_chop_equity = Array(num_players).fill(0);
-        const SIMULATED_HANDS = 1;
+        const SIMULATED_HANDS = 750;
 
         for (let hand = 0; hand < SIMULATED_HANDS; ++hand) {
             let shuffled_deck = removeHoleCardsAndShuffle({deck: deck, dead_cards: dead_cards});
@@ -104,8 +56,8 @@ const EquityCalculator = (props) =>  {
             }
         }
         for (let i = 0; i < num_players; ++i) {
-            players_win_equity[i] = players_win_equity[i] / parseFloat(SIMULATED_HANDS);
-            players_chop_equity[i] = players_chop_equity[i] / parseFloat(SIMULATED_HANDS);
+            players_win_equity[i] = (players_win_equity[i] / parseFloat(SIMULATED_HANDS)).toFixed(4);
+            players_chop_equity[i] = (players_chop_equity[i] / parseFloat(SIMULATED_HANDS)).toFixed(4);
         }
        
         
@@ -243,9 +195,7 @@ const EquityCalculator = (props) =>  {
                 max_rank = hand_ranks[i].rank;
                 winner.splice(0, winner.length);
                 winner.push(i);
-                console.log(hand_ranks[i]);
             } else if (hand_ranks[i].rank === max_rank) {
-                console.log(hand_ranks[i]);
                 let hand_num = rank_tie_breaker({handOne: hand_ranks[winner[0]], handTwo: hand_ranks[i]});
                 
                 // if the hand currently in the winner arr beats the other hand of same rank

@@ -35,7 +35,7 @@ class Card extends Component {
     cardImage() {
         if (this.state.rank == undefined || this.state.suit == undefined) {
             return (
-                <Image source={require('../assets/card_pictures/2C.png')}
+                <Image source={require('../assets/card_pictures/back_of_card.png')}
                         style={styles.cardImage}/>
             )
         } else {
@@ -51,43 +51,11 @@ class Card extends Component {
 
     render(){
         let cardDisplay = this.cardImage();
-        let menu;
+
         
 
         return (
-
-
-            <Menu>
-                <MenuTrigger>
-                    {cardDisplay}
-                </MenuTrigger>
-                <MenuOptions>
-                    <View style={{flexDirection:"row"}}>
-                        <ScrollView style={styles.menuOptions}>
-                            <MenuOption onSelect={this.handleMenuCardSelection} text="sneeze" />
-                            <MenuOption onSelect={this.handleMenuCardSelection} text="sneeze" />
-                            <MenuOption onSelect={this.handleMenuCardSelection} text="sneeze" />
-                        </ScrollView>
-                        <ScrollView>
-                            <MenuOption onSelect={this.handleMenuCardSelection} text="sneeze" />
-                            <MenuOption onSelect={this.handleMenuCardSelection} text="sneeze" />
-                            <MenuOption onSelect={this.handleMenuCardSelection} text="sneeze" />
-                        </ScrollView>
-                        <ScrollView>
-                            <MenuOption onSelect={this.handleMenuCardSelection} text="sneeze" />
-                            <MenuOption onSelect={this.handleMenuCardSelection} text="sneeze" />
-                            <MenuOption onSelect={this.handleMenuCardSelection} text="sneeze" />
-                        </ScrollView>
-                        <ScrollView>
-                            <MenuOption onSelect={this.handleMenuCardSelection} Image="../assets/card_pictures/2C.png" />
-                            <MenuOption onSelect={this.handleMenuCardSelection}  text="s"/>
-                            <MenuOption onSelect={this.handleMenuCardSelection}  />
-                        </ScrollView>
-                   
-                    </View>
-                </MenuOptions>
-                   
-            </Menu>
+        <View>{cardDisplay}</View>
         
         )
     }

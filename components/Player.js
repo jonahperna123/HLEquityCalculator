@@ -13,18 +13,19 @@ class Player extends Component {
             cardTwo: "",
         }
     }
-    handlePress = () => {
-        this.props.onPress({number: this.playerNumber});
+    handlePress = (props) => {
+        let number = parseInt(this.playerNumber * 2) + props.n;
+        this.props.onPress({number: number});
     }
 
 
     render() {
         return (
             <View style={styles.cardContainer}>
-                <TouchableOpacity onPress={this.handlePress}>
+                <TouchableOpacity onPress={() => this.handlePress({n: 0})}>
                     <Card />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this.handlePress}>
+                <TouchableOpacity onPress={() => this.handlePress({n: 1})}>
                     <Card />     
                 </TouchableOpacity >
             </View>

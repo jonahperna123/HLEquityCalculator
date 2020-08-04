@@ -13,10 +13,19 @@ class Simulator extends Component {
         super(props);
 
         let initialPlayerArr = []
-        initialPlayerArr.push(<Player key={0} playerN={0} onPress={this.handleCardClick}/>);
-        initialPlayerArr.push(<Player key={1} playerN={1} onPress={this.handleCardClick}/>);
+
+        //  PASS THE CARDS THAT HAVE BEEN SELECTED TO EACH PLAYER
+
+        initialPlayerArr.push(<Player 
+            handleKeyBoardCloseNoSel={this.handleKeyBoardCloseNoSel}
+            key={0} playerN={0} onPress={this.handleCardClick}/>);
+        initialPlayerArr.push(<Player 
+            handleKeyBoardCloseNoSel={this.handleKeyBoardCloseNoSel}
+            
+            key={1} playerN={1} onPress={this.handleCardClick}/>);
 
         this.deck = Deck();
+        let cards = Array.prototype.fill({}, 4);
     
 
         this.state = {
@@ -24,11 +33,15 @@ class Simulator extends Component {
                 defined: false,
                 players: initialPlayerArr,
                 numPlayers: 2,
-                showKeyboard: false
+                showKeyboard: false,
+                playerCards: cards,
+                cardSelecting: 0
             
         }
 
         this.handleCardClick.bind(this);
+        this.handleKeyBoardCloseNoSel.bind(this);
+        this.handleKeyboardCardSel.bind(this);
     }
 
     handEquityPress = (props) =>{
@@ -44,6 +57,38 @@ class Simulator extends Component {
     }
     handleCardClick = (props) => {
         console.log(props.number);
+        let num = props.number;
+        this.setState({
+            cardSelecting: num
+        });
+       
+        this.setState({
+            showKeyboard: true
+        });
+    }
+    handleKeyBoardCloseNoSel = (props) => {
+        this.setState({
+            showKeyboard: false
+        });
+    }
+
+    handleKeyboardCardSel = (props) => {
+        let rank = props.rank;
+        let suit = props.suit;
+        let cardSelecting = this.state.cardSelecting;
+        let cardArr = this.state.playerCards;
+
+        let card = {
+            rank: rank,
+            suit: suit
+        }
+        cardArr[cardSelecting] = card;
+        this.setState({
+            playerCards: cardArr
+        });
+
+
+
     }
 
     renderProbabilities() {
@@ -66,11 +111,19 @@ class Simulator extends Component {
     addNewPlayer = (props) => {
         let arr = this.state.players;
         let numPlayers = this.state.numPlayers;
-        arr.push(<Player key={numPlayers} playerN={numPlayers} onPress={this.handleCardClick}/>)
+        arr.push(<Player 
+            handleKeyBoardCloseNoSel={this.handleKeyBoardCloseNoSel}
+            key={numPlayers} playerN={numPlayers} onPress={this.handleCardClick}
+            cards={[this.state.playerCards[numPlayers*2], this.state.playerCards[numPlayers*2 + 1]]}
+            />)
         ++numPlayers;
+        let cardArr = this.state.playerCards;
+        cardArr.push({});
+        cardArr.push({});
         this.setState({
             players: arr,
-            numPlayers: numPlayers
+            numPlayers: numPlayers,
+            playerCards: cardArr
         });
     }
 
@@ -79,9 +132,13 @@ class Simulator extends Component {
         let numPlayers = this.state.numPlayers;
         --numPlayers;
         arr.pop();
+        let cardArr = this.state.playerCards;
+        cardArr.pop();
+        cardArr.pop();
         this.setState({
             players: arr,
-            numPlayers: numPlayers
+            numPlayers: numPlayers,
+            playerCards: cardArr
         });
     }
 
@@ -97,6 +154,7 @@ class Simulator extends Component {
         
         const playersOutput = this.state.players.map((player) => <View key={player.key}>{player}</View>)
 
+     
 
         return  (
         <View style={styles.fullPage}>
@@ -114,10 +172,12 @@ class Simulator extends Component {
                     <Button onPress={this.addNewPlayer} title="Add Player"/>
                     <Button onPress={this.removePlayer} title="Remove Player" />
                 </View>
-                <Button onPress={() => (this.setState({showKeyboard: true}))} title="Show Modal" />
-                <CardKeyboard visible={this.state.showKeyboard} />
             </View>
         </View>
+        <CardKeyboard 
+        handleKeyBoardCloseNoSel={this.handleKeyBoardCloseNoSel}
+        handleKeyboardCardSel={this.handleKeyboardCardSel}
+        visible={this.state.showKeyboard}/>
       </View>
         )
     }

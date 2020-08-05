@@ -30,12 +30,16 @@ const Rank_tie_breaker = (props) => {
         return StraightTieBreaker({handOne: handOne, handTwo: handTwo});
     } else if (hand_rank === 5) {
         // Flush house tie breaker
+        return FlushTieBreaker({handOne: handOne, handTwo: handTwo});
     } else if (hand_rank === 6) {
         // Full house tie breaker
+        return FullHouseTieBreaker({handOne: handOne, handTwo: handTwo});
     } else if (hand_rank === 7) {
         // quads tie breaker
+        return QuadsTieBreaker({handOne: handOne, handTwo: handTwo});
     } else if (hand_rank === 8) {
         // str flush tie breaker
+        return (StrFlushTieBreaker({handOne: handOne, handTwo: handTwo}));
     } 
     //Royal flush not possible
 
@@ -135,8 +139,8 @@ const TripsTieBreaker = (props) => {
 }
 
 const StraightTieBreaker = (props) => {
-    let handOne = props.handOne;
-    let handTwo = props.handTwo;
+    const handOne = props.handOne;
+    const handTwo = props.handTwo;
     if (handOne.high_card > handTwo.high_card) {
         return 1;
     } else if (handTwo.high_card > handOne.high_card) {
@@ -144,7 +148,59 @@ const StraightTieBreaker = (props) => {
     }
     return -1;
 }
+const FlushTieBreaker = (props) => {
+    const handOne = props.handOne;
+    const handTwo = props.handTwo;
+    
+    for (let i = 0; i < handOne.flush_ranks.length; i++) {
+        if (handOne.flush_ranks[i] > handTwo.flush_ranks[i]) {
+            return 1;
+        } else if (handTwo.flush_ranks[i] > handOne.flush_ranks[i]) {
+            return 2;
+        }
+    }
+    return -1;
+}
 
+const FullHouseTieBreaker = (props) => {
+    const handOne = props.handOne;
+    const handTwo = props.handTwo;
+    
+    if (handOne.trips_rank > handTwo.trips_rank) {
+        return 1;
+    } else if (handTwo.trips_rank > handOne.trips_rank) {
+        return 2;
+    } else if (handOne.pair_rank > handTwo.pair_rank) {
+        return 1;
+    } else if (handOne.pair_rank < handTwo.pair_rank) {
+        return 2;
+    } 
+    return -1;
+}
+
+
+const QuadsTieBreaker = (props) => {
+    const handOne = props.handOne;
+    const handTwo = props.handTwo;
+
+    if (handOne.quads_rank > handTwo.quads_rank) {
+        return 1;
+    } else if (handTwo.quads_rank > handOne.quads_rank) {
+        return 2;
+    }
+    return -1;
+}
+
+const StrFlushTieBreaker = (props) => {
+    const handOne = props.handOne;
+    const handTwo = props.handTwo;
+    if (handOne.high_card > handTwo.high_card) {
+        return 1;
+    } else if (handTwo.high_card > handOne.high_card) {
+        return 2;
+    }
+    return -1;
+}
 
 
 export default Rank_tie_breaker;

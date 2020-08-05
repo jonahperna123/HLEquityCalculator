@@ -11,42 +11,42 @@ import rank_tie_breaker from './RankTieBreaker';
 
 const EquityCalculator = (props) =>  {
         let deck = props.deck;
-        let dead_cards = props.dead_cards;
+        let dead_cards = props.dead_cards.slice();
 
-        let num_players = 2;
-
-        for (let i = 0; i < dead_cards.length; ++i) {  
-            dead_cards[i] = extractNumberRanks({card: dead_cards[i]});
-        }
-        
+        /// FIX: Read in the correct number of players
+        const num_players = 2;
 
         let hole_cards = [];
         for (let i = 0; i < num_players*2; ++i){
             hole_cards.push(dead_cards[i]);
         }
 
+        console.log(num_players);
         let players_win_equity = Array(num_players).fill(0);
         let players_chop_equity = Array(num_players).fill(0);
-        const SIMULATED_HANDS = 750;
+        console.log(players_chop_equity);
+        console.log(players_win_equity);
+        const SIMULATED_HANDS = 1;
+        
 
         for (let hand = 0; hand < SIMULATED_HANDS; ++hand) {
-            let shuffled_deck = removeHoleCardsAndShuffle({deck: deck, dead_cards: dead_cards});
+            const shuffled_deck = removeHoleCardsAndShuffle({deck: deck, dead_cards: dead_cards});
 
             
             
-            let current_board = get_current_board({shuffled_deck: shuffled_deck, num_players: num_players, 
+            const current_board = get_current_board({shuffled_deck: shuffled_deck, num_players: num_players, 
                                                     num_dead_cards: dead_cards.length});
                 
             
             
         
-            let completed_board = get_completed_board({current_board: current_board, num_dead_cards: dead_cards.length, deck: shuffled_deck});
+            const completed_board = get_completed_board({current_board: current_board, num_dead_cards: dead_cards.length, deck: shuffled_deck});
            
-            let players_hand_ranks = calculate_hand_ranks({hole_cards:hole_cards, 
-                completed_board: completed_board});
+            const players_hand_ranks = calculate_hand_ranks({hole_cards:hole_cards, 
+                completed_board: completed_board, num_players: num_players});
            
-            let winner = calculate_hand_winner({hand_ranks: players_hand_ranks});
-
+            const winner = calculate_hand_winner({hand_ranks: players_hand_ranks});
+            console.log(winner);
             if (winner.length === 1) {
                 ++players_win_equity[winner[0]];
             } else {
@@ -59,6 +59,9 @@ const EquityCalculator = (props) =>  {
             players_win_equity[i] = (players_win_equity[i] / parseFloat(SIMULATED_HANDS)).toFixed(4);
             players_chop_equity[i] = (players_chop_equity[i] / parseFloat(SIMULATED_HANDS)).toFixed(4);
         }
+
+        console.log(players_win_equity)
+        console.log(players_chop_equity);
        
         
         return [players_win_equity, players_chop_equity];
@@ -185,11 +188,11 @@ const EquityCalculator = (props) =>  {
     // RETURNS: the index of player who wins the hand or indexes of equivalent hands if chop
     // ex: player 2 wins hand: [2]
     //         player 1 and 3 chop: [1, 3]
-    //      FIX: Implement chop scenario and if one same rank hand beats the other
+    //      
     const calculate_hand_winner = (props) => {
         let hand_ranks = props.hand_ranks;
         let max_rank = -1;
-        let winner = [];
+        let winner = new Array();
         for (let i = 0; i < hand_ranks.length; ++i) {
             if (hand_ranks[i].rank > max_rank){
                 max_rank = hand_ranks[i].rank;
@@ -197,7 +200,7 @@ const EquityCalculator = (props) =>  {
                 winner.push(i);
             } else if (hand_ranks[i].rank === max_rank) {
                 let hand_num = rank_tie_breaker({handOne: hand_ranks[winner[0]], handTwo: hand_ranks[i]});
-                
+                console.log(hand_num);
                 // if the hand currently in the winner arr beats the other hand of same rank
                 // dont push new value on
                 if (hand_num === 2) {

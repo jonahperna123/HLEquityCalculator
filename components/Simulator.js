@@ -46,7 +46,9 @@ class Simulator extends Component {
     handEquityPress = (props) =>{
         const dead_cards = [...this.state.playerCards];
         const deck = [...this.state.deck];
-        const equity = EquityCalc({deck: deck, dead_cards: dead_cards});
+   
+        const numPlayers = this.state.num_players;
+        const equity = EquityCalc({deck: deck, dead_cards: dead_cards, num_players: numPlayers});
         this.setState({
             equityArr: equity
         });

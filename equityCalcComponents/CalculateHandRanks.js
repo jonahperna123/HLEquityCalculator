@@ -1,9 +1,19 @@
 import React from 'react';
 
+
+
+
+// Returns an object unique to each hand 
+// Each object returns a RANK value that indicates their made hand rank
+// other attributes are included to break ties between hands of the same 'rank'
+// EX: card = {
+//      rank: 1,
+//      .......   
+// }
 const calculate_hand_ranks = (props) => {
-    let completed_board = props.completed_board;
-    let hole_cards = props.hole_cards;
-    let num_players = hole_cards.length / 2;
+    const completed_board = props.completed_board;
+    const hole_cards = props.hole_cards;
+    const num_players = props.num_players;
     let hand_ranks = []
    
 
@@ -40,18 +50,21 @@ const calculate_hand_ranks = (props) => {
 const get_hand_rank = (props) => {
    
    
-    let full_hand = props.full_hand;
-   
+    const full_hand = props.full_hand.slice();
+
     if (check_royal_flush({full_hand: full_hand})) {
-        return 9;
+        const card = {
+            rank: 9
+        }
+        return card;
     } else if (check_str_flush({full_hand: full_hand})) {
-        return 8;
+        return get_str_flush_obj({full_hand: full_hand});
     } else if (check_quads({full_hand: full_hand})) {
-        return 7;
+        return get_quads_obj({full_hand: full_hand});
     } else if (check_full_house({full_hand: full_hand})) {
-        return 6;
+        return get_full_house_obj({full_hand: full_hand});
     } else if (check_flush({full_hand: full_hand})) {
-        return 5;
+        return get_flush_obj({full_hand: full_hand});
     } else if (check_straight({full_hand: full_hand})) {
         return get_straight_obj({full_hand: full_hand});
     } else if (check_trips({full_hand: full_hand})) {
@@ -95,7 +108,8 @@ const check_pair = (props) => {
 }
 
 const get_pair_obj = (props) => {
-    let full_hand = props.full_hand;
+    let full_hand = props.full_hand.slice();
+    
     let kickers = [];
     let card = {};
     for (let i = 0; i < full_hand.length; ++i) {
@@ -307,6 +321,30 @@ const check_flush = (props) => {
    return false;
 }
 
+const get_flush_obj = (props) => {
+    let full_hand = props.full_hand;
+    let card = {};
+
+    for (let i = 0; i < full_hand.length; ++i) {
+        let num_suit = 1;
+        for (let j = i+1; j < full_hand.length; ++j) {
+            let flush_ranks = [full_hand[i].rank];
+            if (full_hand[i].suit === full_hand[j].suit) {
+                flush_ranks.push(full_hand[j].rank);
+                ++num_suit;
+                if (num_suit === 5) {
+                    card = {
+                        rank: 5,
+                        flush_ranks: flush_ranks
+                    }
+                    return card;
+                }
+            }
+        }
+    }
+   return card;
+}
+
 const check_full_house = (props) => {
     let full_hand = props.full_hand.slice();
     let house_set = [];
@@ -335,6 +373,45 @@ const check_full_house = (props) => {
    return false;
 }
 
+const get_full_house_obj = (props) => {
+    const full_hand = props.full_hand.slice();
+    let card = {}
+    let house_set = [];
+    let isThree = false;
+    let isTwo = false;
+    let tripsRank;
+    let pairRank;
+    for (let i = 0; i < full_hand.length - 2; ++i) {
+        let num_same = 1;
+
+        for (let j = i+1; j < full_hand.length; ++j) {
+            if (full_hand[i].rank === full_hand[j].rank && !house_set.includes(i)) {
+                ++num_same;
+                house_set.push(j);
+            }
+            if (num_same === 3) {
+                isThree = true;
+                isTwo = false;
+                tripsRank = full_hand[i].rank;
+            } else if (num_same === 2) {
+                isTwo = true;
+                pairRank = full_hand[i].rank;
+            }
+            if (isTwo && isThree) {
+                card = {
+                    rank: 6,
+                    tripsRank: tripsRank,
+                    pairRank: pairRank
+                };
+                return card;
+            }
+        }
+    }
+
+   return card;
+}
+
+
 const check_quads = (props) => {
     let full_hand = props.full_hand;
     for (let i = 0; i < full_hand.length - 3; ++i) {
@@ -351,6 +428,29 @@ const check_quads = (props) => {
   return false;
 }
 
+const get_quads_obj = (props) => {
+    const full_hand = props.full_hand;
+    let card = {};
+    for (let i = 0; i < full_hand.length - 3; ++i) {
+        let num_same = 1;
+        for (let j = i+1; j < full_hand.length; ++j) {
+            if (full_hand[i].rank === full_hand[j].rank) {
+                ++num_same;
+            }
+            if (num_same === 4) {
+                const rank = full_hand[i].rank;
+                card = {
+                    rank: 7,
+                    quads_rank: rank
+                };
+                return card;
+            }
+        }
+    }
+  return card;
+
+}
+
 const check_str_flush = (props) => {
     let full_hand = props.full_hand;
     let rank_set = [];
@@ -363,6 +463,9 @@ const check_str_flush = (props) => {
     }
     if (rank_set.length < 5) {
         return false;
+    }
+    if (rank_set.includes(12)) {
+        rank_set.push(-1);
     }
     for (let i = 0; i < rank_set.length - 4; ++i){
         if (rank_set[i] - 1 === rank_set[i+1]
@@ -381,6 +484,45 @@ const check_str_flush = (props) => {
     }
     return false;
 }
+
+const get_str_flush_obj = (props) => {
+    const full_hand = props.full_hand.slice();
+    let card = {}
+
+    let rank_set = [];
+    let str_flush = [];
+    for (let i = 0; i < full_hand.length; ++i) {
+        if (!rank_set.includes(full_hand[i].rank)) {
+            rank_set.push(full_hand[i].rank);
+            str_flush.push(full_hand[i]);
+        }
+    }
+    if (rank_set.includes(12)) {
+        rank_set.push(-1);
+    }
+  
+    for (let i = 0; i < rank_set.length - 4; ++i){
+        if (rank_set[i] - 1 === rank_set[i+1]
+            && rank_set[i+1] - 1 === rank_set[i+2]
+            && rank_set[i+2] - 1 === rank_set[i+3]
+            && rank_set[i+3] - 1 === rank_set[i+4]) {
+                let suit = str_flush[i].suit;
+                if (str_flush[i].suit === suit &&
+                    str_flush[i+1].suit === suit &&
+                    str_flush[i+2].suit === suit &&
+                    str_flush[i+3].suit === suit &&
+                    str_flush[i+4].suit === suit){
+                        card = {
+                            rank: 8,
+                            high_card: rank_set[i]
+                        };
+                        return card;
+                    }
+            }
+    }
+    return card;
+}
+
 
 const check_royal_flush = (props) => {
     let full_hand = props.full_hand;

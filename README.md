@@ -1,4 +1,4 @@
-#Hold 'Em EquityCalculator
+# Hold 'Em EquityCalculator
 
 Welcome to an Equity Calculator for Texas Hold 'Em!
 

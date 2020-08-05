@@ -12,59 +12,54 @@ class Simulator extends Component {
     constructor(props) {
         super(props);
 
-        let initialPlayerArr = []
+        let initialPlayerArr = [];
 
-        //  PASS THE CARDS THAT HAVE BEEN SELECTED TO EACH PLAYER
 
-        initialPlayerArr.push(<Player 
-            handleKeyBoardCloseNoSel={this.handleKeyBoardCloseNoSel}
-            key={0} playerN={0} onPress={this.handleCardClick}/>);
-        initialPlayerArr.push(<Player 
-            handleKeyBoardCloseNoSel={this.handleKeyBoardCloseNoSel}
-            
-            key={1} playerN={1} onPress={this.handleCardClick}/>);
-
-        this.deck = Deck();
-        let cards = Array.prototype.fill({}, 4);
+        let deck = Deck();
+        let cards = [];
+        cards.push({
+            rank: '',
+            suit: ''
+        });
     
 
         this.state = {
                 equityArr : [],
-                defined: false,
-                players: initialPlayerArr,
                 numPlayers: 2,
                 showKeyboard: false,
                 playerCards: cards,
-                cardSelecting: 0
+                cardSelecting: -1,
+                runSim: false,
+                deck: deck,
             
         }
 
         this.handleCardClick.bind(this);
         this.handleKeyBoardCloseNoSel.bind(this);
         this.handleKeyboardCardSel.bind(this);
+        this.handEquityPress.bind(this);
+        this.addNewPlayer.bind(this);
+        this.removePlayer.bind(this);
     }
 
+
     handEquityPress = (props) =>{
-        let dead_cards = [];
-
-
-        let equity = EquityCalc({deck: this.deck, dead_cards: dead_cards});
-        this.setState({equityArr: equity})
+        const dead_cards = [...this.state.playerCards];
+        const deck = [...this.state.deck];
+        const equity = EquityCalc({deck: deck, dead_cards: dead_cards});
         this.setState({
-            defined: true
+            equityArr: equity
         });
+    
 
     }
     handleCardClick = (props) => {
-        console.log(props.number);
         let num = props.number;
         this.setState({
-            cardSelecting: num
-        });
-       
-        this.setState({
+            cardSelecting: num,
             showKeyboard: true
         });
+       
     }
     handleKeyBoardCloseNoSel = (props) => {
         this.setState({
@@ -78,65 +73,45 @@ class Simulator extends Component {
         let cardSelecting = this.state.cardSelecting;
         let cardArr = this.state.playerCards;
 
-        let card = {
+        cardArr[cardSelecting] = {
             rank: rank,
             suit: suit
         }
-        cardArr[cardSelecting] = card;
+       
         this.setState({
             playerCards: cardArr
         });
-
-
-
-    }
-
-    renderProbabilities() {
-        const item = this.state.equityArr[0];
-        const chop = this.state.equityArr[1];
-        return (
-        <View>
-            <Text style={{fontWeight: 'bold'}}>Win Probability</Text>
-            <Text key={0}>Hand {0} win: {item[0] * 100.00} %</Text>
-            <Text key={1}>Hand {1} win: {item[1] * 100.00} %</Text>
-            <Text style={{fontWeight: 'bold'}}>Chop Probability</Text>
-            <Text key={2}>Hand {0} chop: {chop[0] * 100.00} %</Text>
-            <Text key={3}>Hand {1} chop: {chop[1]* 100.00} %</Text>
-
-        </View>
-        )
         
+        this.setState({
+            showKeyboard: false
+        }    
+        );
+       
+
+
+
     }
+
 
     addNewPlayer = (props) => {
-        let arr = this.state.players;
         let numPlayers = this.state.numPlayers;
-        arr.push(<Player 
-            handleKeyBoardCloseNoSel={this.handleKeyBoardCloseNoSel}
-            key={numPlayers} playerN={numPlayers} onPress={this.handleCardClick}
-            cards={[this.state.playerCards[numPlayers*2], this.state.playerCards[numPlayers*2 + 1]]}
-            />)
         ++numPlayers;
         let cardArr = this.state.playerCards;
-        cardArr.push({});
-        cardArr.push({});
+        cardArr.push({rank: '', suit: ''});
+        cardArr.push({rank: '', suit: ''});
         this.setState({
-            players: arr,
             numPlayers: numPlayers,
             playerCards: cardArr
         });
     }
 
     removePlayer = (props) => {
-        let arr = this.state.players;
         let numPlayers = this.state.numPlayers;
         --numPlayers;
-        arr.pop();
         let cardArr = this.state.playerCards;
         cardArr.pop();
         cardArr.pop();
         this.setState({
-            players: arr,
             numPlayers: numPlayers,
             playerCards: cardArr
         });
@@ -147,12 +122,28 @@ class Simulator extends Component {
     render () {
         let deck = Deck();
         let probabilities = null;
-        if (this.state.defined) {
-            probabilities = this.renderProbabilities();
-        }
-        let showModal = false;
+        const equityCopy = [...this.state.equityArr];
         
-        const playersOutput = this.state.players.map((player) => <View key={player.key}>{player}</View>)
+
+        let players = [];
+        const cards = this.state.playerCards;
+        const numPlayers = this.state.numPlayers;
+        for (let i = 0; i < numPlayers; ++i) {
+            let equity;
+            if (equityCopy.length !== 0) {
+                equity = equityCopy[i];
+            }
+            players.push(
+                <Player
+            key={i} playerN={i} equity={equity} onPress={this.handleCardClick}
+            cards={[cards[i*2], cards[i*2 + 1]]
+            }
+            />
+            );
+            
+        }
+        
+        const playersOutput = players.map((player) => <View key={player.key}>{player}</View>)
 
      
 
@@ -165,7 +156,7 @@ class Simulator extends Component {
             <ScrollView>
                 {playersOutput}
             </ScrollView>
-            {probabilities}
+            
             <View style={styles.navigatorPanel}>
                 <Button onPress={this.handEquityPress} title="Run Equity Simulator"/>
                 <View style={styles.controlPlayers}>

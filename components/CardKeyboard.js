@@ -33,7 +33,6 @@ class CardKeyboard extends React.Component {
         this.props.handleKeyBoardCloseNoSel();
     }
     handleCardClick = (props) => {
-        console.log(props.rank);
         let rank = props.rank;
         let suit = props.suit;
         this.props.handleKeyboardCardSel({rank: rank, suit: suit});
@@ -90,6 +89,7 @@ class CardKeyboard extends React.Component {
                 visible={this.props.visible}
                 transparent= 'true'
                 animationType='slide'
+                
                 >
                 <TouchableOpacity activeOpacity={0} style={styles.modalCloseArea} onPress={this.handleModalCloseWithoutSelection}>
 

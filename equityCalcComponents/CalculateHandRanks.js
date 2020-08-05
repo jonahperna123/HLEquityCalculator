@@ -245,7 +245,7 @@ const check_straight = (props) => {
     if (rank_set.includes(12)) {
         rank_set.push(-1);
     }
-    console.log(rank_set);
+   
     if (rank_set.length < 5) {
         return false;
     }

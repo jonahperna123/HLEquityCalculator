@@ -12,7 +12,7 @@ const Rank_tie_breaker = (props) => {
     let handOne = props.handOne;
     let handTwo = props.handTwo;
     let hand_rank = handOne.rank;
-    console.log(hand_rank);
+    
     if(hand_rank === 0) {
         //high card tie breaker
         return HighCardTieBreaker({handOne: handOne, handTwo: handTwo});

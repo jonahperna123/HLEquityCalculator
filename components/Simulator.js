@@ -78,10 +78,25 @@ class Simulator extends Component {
     }
 
     handleKeyboardCardSel = (props) => {
-        let rank = props.rank;
-        let suit = props.suit;
         let cardSelecting = this.state.cardSelecting;
         let cardArr = this.state.playerCards;
+
+        if (this.props.backspace === undefined) {
+            let rank = props.rank;
+            let suit = props.suit;
+
+        // check if the card already has been selected 
+        // and remove if it has been
+        for (let i = 0; i < cardArr.length; ++i) {
+            let card = cardArr[i];
+            if (card.suit === suit && card.rank === rank) {
+                cardArr[i] = {
+                    rank: '',
+                    suit: ''
+                }
+                break;
+            }
+        }
 
         cardArr[cardSelecting] = {
             rank: rank,
@@ -89,14 +104,20 @@ class Simulator extends Component {
         }
        
         this.setState({
-            playerCards: cardArr
-        });
-        
-        this.setState({
+            playerCards: cardArr,
             showKeyboard: false
-        }    
-        );
-       
+        });
+    } else {
+        cardArr[cardSelecting] = {
+            rank: '',
+            suit: ''
+        }
+        this.setState({
+            playerCards: cardArr,
+            showKeyboard: true
+        });
+
+    }
 
 
 
@@ -109,9 +130,6 @@ class Simulator extends Component {
         let cardArr = this.state.playerCards;
 
         let boardCards = cardArr.slice(cardArr.length - 5, cardArr.length);
-        for (let i = 0; i < boardCards.length; i++) {
-            console.log(boardCards[i]);
-        }
 
         cardArr = cardArr.slice(0, cardArr.length - 5);
         cardArr.push({rank: '', suit: ''});

@@ -50,10 +50,10 @@ class Player extends Component {
         
         return (
             <View style={styles.cardContainer}>
-                <TouchableOpacity onPress={() => this.handlePress({n: 0})}>
+                <TouchableOpacity onPressOut={() => this.handlePress({n: 0})}>
                     <Card card={cardOne}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.handlePress({n: 1})}>
+                <TouchableOpacity onPressOut={() => this.handlePress({n: 1})}>
                     <Card card={cardTwo}/>     
                 </TouchableOpacity >
                 <View>

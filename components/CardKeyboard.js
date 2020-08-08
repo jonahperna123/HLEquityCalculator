@@ -33,6 +33,11 @@ class CardKeyboard extends React.Component {
         this.props.handleKeyBoardCloseNoSel();
     }
     handleCardClick = (props) => {
+        if (this.props.backspace !== undefined) {
+            this.props.handleKeyboardCardSel({backspace: true});
+            return;
+        }
+        
         let rank = props.rank;
         let suit = props.suit;
         this.props.handleKeyboardCardSel({rank: rank, suit: suit});
@@ -61,17 +66,19 @@ class CardKeyboard extends React.Component {
 
 
         let rank = 12;
-        const rowOne = arrOne.map(img => {
+        let rowOne = arrOne.map(img => {
             let idx = rank;
             --rank;
             return (
             <TouchableOpacity 
             onPressOut={() => this.handleCardClick({rank: idx, suit: this.state.suit})} key={rank+1} >{img}</TouchableOpacity>
             )
-        }
+        });
+
+        rowOne.push(<TouchableOpacity key={25}onPressOut={() => this.handleCardClick({backspace: true})}style={{marginTop:30}}><Image style={{height:20, width: 30}}source={require('../assets/card_pictures/backspace_icon.png')} /></TouchableOpacity>)
        
             
-        );
+      
 
         const rowTwo = arrTwo.map(img => {
             let idx = rank;

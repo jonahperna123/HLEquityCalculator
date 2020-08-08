@@ -17,15 +17,15 @@ class BoardHeader extends Component {
                 <View style={{alignItems: 'center'}}>
                     <Text>Flop</Text>
                     <View style={styles.flopView}>
-                        <TouchableOpacity onPress={() => this.handleCardClick({number:0})}>
+                        <TouchableOpacity onPressOut={() => this.handleCardClick({number:0})}>
                             <Card style={styles.flopCardStyle}
                                 card={cards[0]}/>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.handleCardClick({number:1})}>
+                        <TouchableOpacity onPressOut={() => this.handleCardClick({number:1})}>
                             <Card style={styles.flopCardStyle}
                             card={cards[1]}/>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.handleCardClick({number:2})}>
+                        <TouchableOpacity onPressOut={() => this.handleCardClick({number:2})}>
                             <Card style={styles.flopCardStyle}
                             card={cards[2]}/>
                         </TouchableOpacity>
@@ -34,14 +34,14 @@ class BoardHeader extends Component {
                 </View>
                 <View style={styles.turnView}>
                     <Text>Turn</Text>
-                    <TouchableOpacity onPress={() => this.handleCardClick({number:3})}>
+                    <TouchableOpacity onPressOut={() => this.handleCardClick({number:3})}>
                             <Card style={styles.flopCardStyle}
                             card={cards[3]}/>
                     </TouchableOpacity>
                 </View>
                 <View style={{alignItems: 'center'}}>
                     <Text>River</Text>
-                    <TouchableOpacity onPress={() => this.handleCardClick({number:4})}>
+                    <TouchableOpacity onPressOut={() => this.handleCardClick({number:4})}>
                             <Card style={styles.flopCardStyle}
                             card={cards[4]}/>
                     </TouchableOpacity>

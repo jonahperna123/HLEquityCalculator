@@ -22,6 +22,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "Made changes, added card keyboard. Still changes to make"
+    "description": "Run hands against each other to determine their equity!"
   }
 }

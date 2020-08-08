@@ -14,19 +14,24 @@ const EquityCalculator = (props) =>  {
         let dead_cards = props.dead_cards.slice();
 
         /// FIX: Read in the correct number of players
-        const num_players = 2;
+        const num_players = props.num_players;
+        for (let i = 0; i < dead_cards.length; ++i) {
+            dead_cards[i] = extractNumberRanks({card: dead_cards[i]});
+        }
 
+        
         let hole_cards = [];
         for (let i = 0; i < num_players*2; ++i){
             hole_cards.push(dead_cards[i]);
         }
 
-        console.log(num_players);
-        let players_win_equity = Array(num_players).fill(0);
-        let players_chop_equity = Array(num_players).fill(0);
-        console.log(players_chop_equity);
-        console.log(players_win_equity);
-        const SIMULATED_HANDS = 1;
+        
+        let players_win_equity = new Array(num_players).fill(0);
+        let players_chop_equity = new Array(num_players).fill(0);
+        let returnArr = new Array(num_players).fill([]);
+
+    
+        const SIMULATED_HANDS = 2000;
         
 
         for (let hand = 0; hand < SIMULATED_HANDS; ++hand) {
@@ -46,7 +51,7 @@ const EquityCalculator = (props) =>  {
                 completed_board: completed_board, num_players: num_players});
            
             const winner = calculate_hand_winner({hand_ranks: players_hand_ranks});
-            console.log(winner);
+            
             if (winner.length === 1) {
                 ++players_win_equity[winner[0]];
             } else {
@@ -55,16 +60,19 @@ const EquityCalculator = (props) =>  {
                 }
             }
         }
+
+        // After the loop, parse the numbers into percentages and add them into 
+        // an array with their chop equity of given hand
         for (let i = 0; i < num_players; ++i) {
+            let dualEquity = [];
             players_win_equity[i] = (players_win_equity[i] / parseFloat(SIMULATED_HANDS)).toFixed(4);
             players_chop_equity[i] = (players_chop_equity[i] / parseFloat(SIMULATED_HANDS)).toFixed(4);
+            dualEquity.push(players_win_equity[i]);
+            dualEquity.push(players_chop_equity[i]);
+            returnArr[i] = dualEquity;
         }
-
-        console.log(players_win_equity)
-        console.log(players_chop_equity);
-       
         
-        return [players_win_equity, players_chop_equity];
+        return returnArr;
 
     }
 
@@ -200,7 +208,6 @@ const EquityCalculator = (props) =>  {
                 winner.push(i);
             } else if (hand_ranks[i].rank === max_rank) {
                 let hand_num = rank_tie_breaker({handOne: hand_ranks[winner[0]], handTwo: hand_ranks[i]});
-                console.log(hand_num);
                 // if the hand currently in the winner arr beats the other hand of same rank
                 // dont push new value on
                 if (hand_num === 2) {
@@ -228,20 +235,11 @@ const EquityCalculator = (props) =>  {
     //          player 3: two pair
     
     const extractNumberRanks = (props) => {
-        let strRank = props.card.rank;
-        let strSuit = props.card.suit;
-        let numRank;
-        let numSuit;
-       
-        for (let i = 0; i < cardRankings.length; ++i) {
-            if (strRank === cardRankings[i]) {
-                numRank = i;
-            } 
-        } for (let i = 0; i < suitRankings.length; ++i) {
-           
-            if (strSuit === suitRankings[i]) {
+        let numSuit = props.card.suit;
+        let numRank = props.card.rank;
+     for (let i = 0; i < suitRankings.length; ++i) {
+            if (numSuit === suitRankings[i]) {
                numSuit = i;
-               
             }
         }
         let card = {

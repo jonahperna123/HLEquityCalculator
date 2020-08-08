@@ -69,10 +69,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 200,
         borderColor: 'black',
-        borderTopWidth: 1,
+        borderBottomWidth: 1,
         paddingTop: 25,
         paddingLeft: 10,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        backgroundColor: '#00CF4A'
     }
 });
 

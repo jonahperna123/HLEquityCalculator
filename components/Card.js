@@ -59,10 +59,11 @@ class Card extends Component {
     }
 
     cardImage() {
+    
         if (this.props.card === undefined || this.props.card.rank === '') {
             return (
                 <Image source={require('../assets/card_pictures/back_of_card.png')}
-                        style={styles.cardImage}/>
+                        style={[styles.cardImage, this.props.style]}/>
             )
         } else {
             let rank = this.props.card.rank;
@@ -83,13 +84,9 @@ class Card extends Component {
 
             return (
                 <Image source={imgStr}
-                style={styles.cardImage} />
+                style={[styles.cardImage, this.props.style]} />
             )
         }
-    }
-
-    handleMenuCardSelection() {
-        alert('achoo!');
     }
 
     render(){
@@ -106,15 +103,11 @@ class Card extends Component {
 
 const styles = StyleSheet.create({
     cardImage: {
-        height: 125,
+        height: 135,
         width: 90,
-        margin: 5
+        margin: 5,
+        borderRadius: 5
     },
-    menuOptions: {
-        height: 400,
-        alignSelf: 'stretch',
-        
-    }
 })
 
 export default Card;

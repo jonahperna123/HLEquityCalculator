@@ -17,11 +17,14 @@ class Simulator extends Component {
 
         let deck = Deck();
         let cards = [];
-        cards.push({
-            rank: '',
-            suit: ''
-        });
-    
+        for (let i = 0; i < 9; i++) {
+            cards.push({
+                rank: '',
+                suit: ''
+            });
+        
+        }
+        
 
         this.state = {
                 equityArr : [],
@@ -47,7 +50,8 @@ class Simulator extends Component {
         const dead_cards = [...this.state.playerCards];
         const deck = [...this.state.deck];
    
-        const numPlayers = this.state.num_players;
+        const numPlayers = this.state.numPlayers;
+       
         const equity = EquityCalc({deck: deck, dead_cards: dead_cards, num_players: numPlayers});
         this.setState({
             equityArr: equity
@@ -57,6 +61,10 @@ class Simulator extends Component {
     }
     handleCardClick = (props) => {
         let num = props.number;
+        if (props.boardCard === true) {
+            num = this.state.numPlayers * 2 + num;
+        }
+        
         this.setState({
             cardSelecting: num,
             showKeyboard: true
@@ -99,23 +107,36 @@ class Simulator extends Component {
         let numPlayers = this.state.numPlayers;
         ++numPlayers;
         let cardArr = this.state.playerCards;
+
+        let boardCards = cardArr.slice(cardArr.length - 5, cardArr.length);
+        for (let i = 0; i < boardCards.length; i++) {
+            console.log(boardCards[i]);
+        }
+
+        cardArr = cardArr.slice(0, cardArr.length - 5);
         cardArr.push({rank: '', suit: ''});
         cardArr.push({rank: '', suit: ''});
+      
+        const neArr = cardArr.concat(boardCards);
         this.setState({
             numPlayers: numPlayers,
-            playerCards: cardArr
+            playerCards: neArr
         });
+        
     }
 
     removePlayer = (props) => {
         let numPlayers = this.state.numPlayers;
         --numPlayers;
         let cardArr = this.state.playerCards;
+        let boardCards = cardArr.slice(cardArr.length - 5, cardArr.length);
+        cardArr = cardArr.slice(0, cardArr.length - 5);
         cardArr.pop();
         cardArr.pop();
+        const finalArr = cardArr.concat(boardCards);
         this.setState({
             numPlayers: numPlayers,
-            playerCards: cardArr
+            playerCards: finalArr
         });
     }
 
@@ -146,13 +167,18 @@ class Simulator extends Component {
         }
         
         const playersOutput = players.map((player) => <View key={player.key}>{player}</View>)
-
+        const boardCards = cards.slice(cards.length-5, cards.length);
      
 
         return  (
         <View style={styles.fullPage}>
+            <View>
+
+            </View>
             <View style={styles.header}>
-            <BoardHeader/>
+            <BoardHeader 
+            boardCards={boardCards}
+            onPress={this.handleCardClick}/>
             </View>
             <View style={styles.playerContainer}>
             <ScrollView>
@@ -180,18 +206,19 @@ class Simulator extends Component {
 const styles = StyleSheet.create({
     fullPage: {
       flexDirection: 'column',
-      height: '100%'
+      height: '100%',
+      backgroundColor: '#00CF4A'
     },
     header: {
-  
+      paddingTop: '10%',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'grey',
-      alignContent: "center",
-      justifyContent: 'center',
       width: '100%',
-      height: '25%',
+      height: '20%',
       top: 0,
+      borderBottomWidth: 4,
+      borderColor: 'black'
       
     },
     playerContainer: {

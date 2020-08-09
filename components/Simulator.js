@@ -6,6 +6,7 @@ import EquityCalc from '../equityCalcComponents/EquityCalculator';
 import BoardHeader from './BoardHeader'
 import Player from './Player'
 import CardKeyboard from './CardKeyboard';
+import COLORS from '../constants/Colors';
 
 
 class Simulator extends Component {
@@ -225,18 +226,18 @@ const styles = StyleSheet.create({
     fullPage: {
       flexDirection: 'column',
       height: '100%',
-      backgroundColor: '#00CF4A'
+      backgroundColor: COLORS.primary
     },
     header: {
       paddingTop: '10%',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'grey',
+      backgroundColor: COLORS.boardBackground,
       width: '100%',
       height: '20%',
       top: 0,
       borderBottomWidth: 4,
-      borderColor: 'black'
+      borderColor: COLORS.secondary
       
     },
     playerContainer: {

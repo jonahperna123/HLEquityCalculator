@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
         paddingTop: 25,
         paddingLeft: 10,
         overflow: 'hidden',
-        backgroundColor: '#00CF4A'
     }
 });
 

@@ -95,7 +95,7 @@ class Card extends Component {
         
 
         return (
-        <View>{cardDisplay}</View>
+        <View style={styles.cardView}>{cardDisplay}</View>
         
         )
     }
@@ -106,8 +106,19 @@ const styles = StyleSheet.create({
         height: 135,
         width: 90,
         margin: 5,
-        borderRadius: 5
+        borderRadius: 5,
+
     },
-})
+    cardView: {
+        shadowOffset: {
+	        width: 1,
+	        height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 10
+
+    }
+});
 
 export default Card;

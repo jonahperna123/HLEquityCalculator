@@ -4,6 +4,7 @@ import clubs from '../constants/clubPaths';
 import diamonds from '../constants/diamondPaths'
 import hearts from '../constants/heartPaths'
 import spades from '../constants/spadePaths'
+import COLORS from '../constants/Colors';
 
 const BUTTONCOLOR='white';
 
@@ -75,7 +76,7 @@ class CardKeyboard extends React.Component {
             )
         });
 
-        rowOne.push(<TouchableOpacity key={25}onPressOut={() => this.handleCardClick({backspace: true})}style={{marginTop:30}}><Image style={{height:20, width: 30}}source={require('../assets/card_pictures/backspace_icon.png')} /></TouchableOpacity>)
+        rowOne.push(<TouchableOpacity key={25}onPressOut={() => this.handleCardClick({backspace: true})}style={{marginTop:30, marginLeft: 7}}><Image style={{height:20, width: 30}}source={require('../assets/card_pictures/backspace_icon.png')} /></TouchableOpacity>)
        
             
       
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     inputSelectionContainer: {
-        backgroundColor: 'grey',
+        backgroundColor: COLORS.accent,
         paddingBottom: '35%'
 
     },

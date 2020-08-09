@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Card from '../components/Card';
 
+
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 class BoardHeader extends Component {

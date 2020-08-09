@@ -28,6 +28,9 @@ const EquityCalculator = (props) =>  {
         
         let players_win_equity = new Array(num_players).fill(0);
         let players_chop_equity = new Array(num_players).fill(0);
+        let playerHandDistributionObj = {
+            
+        }
         let returnArr = new Array(num_players).fill([]);
 
     

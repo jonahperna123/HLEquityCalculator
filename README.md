@@ -1,6 +1,6 @@
 # Hold 'Em EquityCalculator
 
-Welcome to an Equity Calculator for Texas Hold 'Em!
+Welcome to an Equity Calculator for Texas Hold 'Em, built by Jonah Perna
 
 
 # To test via expo please:  

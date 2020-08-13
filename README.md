@@ -3,10 +3,10 @@
 Welcome to an Equity Calculator for Texas Hold 'Em!
 
 
-To test via expo please:
-  clone repo,
-  install dependencies,
-  yarn [simulator platform(ios/android)]
+To test via expo please:  
+  clone repo,\n
+  install dependencies,\n
+  yarn [simulator platform(ios/android)]\n
   
 You must have expo CLI to use.
 

@@ -2,7 +2,7 @@
 
 Welcome to an Equity Calculator for Texas Hold 'Em, built by Jonah Perna
 
-This project is still under development & several features will be added.
+This project is still under development & several features & UI updates will be added.
 
 # To test via expo please:  
 

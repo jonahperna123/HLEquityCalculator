@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import handRankings from '../constants/handRankings';
 import suitRankings from '../constants/suitRankings';
 import cardRankings from '../constants/cardRankings';
@@ -13,7 +13,7 @@ const EquityCalculator = (props) =>  {
         let deck = props.deck;
         let dead_cards = props.dead_cards.slice();
 
-        /// FIX: Read in the correct number of players
+        
         const num_players = props.num_players;
         for (let i = 0; i < dead_cards.length; ++i) {
             dead_cards[i] = extractNumberRanks({card: dead_cards[i]});
@@ -87,16 +87,42 @@ const EquityCalculator = (props) =>  {
         let deck = props.deck;
         let dead_cards = props.dead_cards;
         let usedCards = [];
-
+        let declaredCards = [];
+        //console.log(dead_cards.length);
         
         for (let j = 0; j < dead_cards.length; ++j) {
             for (let i = 0; i < 52; ++i){            
                 if (dead_cards[j].rank === deck[i].rank && 
                     dead_cards[j].suit === deck[i].suit) {
-                        usedCards.push(i);
+                        declaredCards.push(i);
                     }
+                
             } 
         } //get the indices of cards already used;
+
+        for (let j = 0; j < dead_cards.length; ++j) {
+            if (dead_cards[j].rank === '' && 
+                dead_cards[j].suit === '' && j < dead_cards.length - 5) {
+                    let randomNumb = Math.floor(Math.random() * 52);
+                    while (declaredCards.includes(randomNumb)) {
+                        randomNumb = Math.floor(Math.random() * 52);
+                    }
+
+                    usedCards.push(randomNumb);
+
+                } else {
+                    for (let i = 0; i < 52; ++i){            
+                        if (dead_cards[j].rank === deck[i].rank && 
+                            dead_cards[j].suit === deck[i].suit) {
+                                usedCards.push(i);
+                            }
+                        
+                    } 
+                }
+            
+        }
+
+        //console.log(usedCards);
 
         let k = 0;
         let shuffledDeck = [];

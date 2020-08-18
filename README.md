@@ -2,7 +2,7 @@
 
 Welcome to an Equity Calculator for Texas Hold 'Em, built by Jonah Perna
 
-This project is still under development & several features will be added.
+This project is still under development & several features & UI updates will be added.
 
 # To test via expo please:  
 
@@ -11,7 +11,9 @@ This project is still under development & several features will be added.
   3. yarn [simulator platform(ios/android)],
   
 --------
-You must have expo CLI to use.
+You must have Expo CLI to use. 
+If you do NOT have Expo CLI please see documentation here:
+https://docs.expo.io/get-started/installation/
 
 Please direct all inquiries to Jonah Perna
 

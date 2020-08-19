@@ -9,17 +9,19 @@
 // Black and Orange scheme:
 //
 const COLORS = {
-    primary: "#beef00", // main panel coloring
-    boardBackground: '#fe1d06',
+    primary: "#228B22", // main panel coloring
+    boardBackground: '#228B22',
     secondary: '#060809', // flop panel BORDER coloring
-    accent: '#5d1df0', // // Card keyboard coloring
+    accent: '#8B008B', // // Card keyboard coloring
+    bottomNavColor: '#342211'
 }
 
 // grey: 434343
 // dimgray: 696969
 // orange: FFA500
 // black: 060809
-// electric red: #ff0028
+// electric red: #e6000
+// Brown: #22160B
 
 
 

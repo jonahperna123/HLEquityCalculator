@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button, TextInput, FlatList } from 'react-native';
+import { StyleSheet, 
+        Text, 
+        View, 
+        ScrollView, 
+        Button, 
+        TextInput, 
+        FlatList, 
+        TouchableOpacity, 
+        Image } from 'react-native';
 
 import Deck from '../equityCalcComponents/Deck';
 import EquityCalc from '../equityCalcComponents/EquityCalculator';
@@ -44,6 +52,8 @@ class Simulator extends Component {
         this.handEquityPress.bind(this);
         this.addNewPlayer.bind(this);
         this.removePlayer.bind(this);
+        this.resetAll.bind(this);
+        this.handlePlayerDelete.bind(this);
     }
 
 
@@ -106,7 +116,8 @@ class Simulator extends Component {
        
         this.setState({
             playerCards: cardArr,
-            showKeyboard: false
+            showKeyboard: false,
+            equityArr: []
         });
     } else {
         cardArr[cardSelecting] = {
@@ -115,7 +126,8 @@ class Simulator extends Component {
         }
         this.setState({
             playerCards: cardArr,
-            showKeyboard: true
+            showKeyboard: true,
+            equityArr: []
         });
 
     }
@@ -139,7 +151,8 @@ class Simulator extends Component {
         const neArr = cardArr.concat(boardCards);
         this.setState({
             numPlayers: numPlayers,
-            playerCards: neArr
+            playerCards: neArr,
+            equityArr: []
         });
         
     }
@@ -156,6 +169,44 @@ class Simulator extends Component {
         this.setState({
             numPlayers: numPlayers,
             playerCards: finalArr
+        });
+    }
+
+
+    handlePlayerDelete = (props) => {
+        const playerIndex = props.playerN;
+        let numPlayers = this.state.numPlayers;
+        --numPlayers;
+        let cardArr = this.state.playerCards;
+        cardArr.splice(playerIndex*2, 2); //remove two cards starting at player index
+        this.setState({
+            numPlayers: numPlayers,
+            playerCards: cardArr,
+            equityArr: []
+        });
+        
+    }
+
+
+    resetAll = (props) => {
+        const deck = Deck();
+        let cards = [];
+        for (let i = 0; i < 9; i++) {
+            cards.push({
+                rank: '',
+                suit: ''
+            });
+        
+        }
+        
+        this.setState({
+                equityArr : [],
+                numPlayers: 2,
+                showKeyboard: false,
+                playerCards: cards,
+                cardSelecting: -1,
+                runSim: false,
+                deck: deck,
         });
     }
 
@@ -178,8 +229,7 @@ class Simulator extends Component {
             players.push(
                 <Player
             key={i} playerN={i} equity={equity} onPress={this.handleCardClick}
-            cards={[cards[i*2], cards[i*2 + 1]]
-            }
+            cards={[cards[i*2], cards[i*2 + 1]]} handlePlayerDelete={this.handlePlayerDelete}
             />
             );
             
@@ -205,10 +255,22 @@ class Simulator extends Component {
             </ScrollView>
             
             <View style={styles.navigatorPanel}>
-                <Button onPress={this.handEquityPress} title="Run Equity Simulator"/>
                 <View style={styles.controlPlayers}>
-                    <Button onPress={this.addNewPlayer} title="Add Player"/>
-                    <Button onPress={this.removePlayer} title="Remove Player" />
+                <View style={styles.resetButton}>
+                    <TouchableOpacity onPressOut={this.resetAll} >
+                        <Image style={{marginBottom: 5}}source={require('../assets/resetIcon.png')}></Image>
+                        <Text style={styles.bottomNavText}>Reset</Text>
+                    </TouchableOpacity>
+                </View>
+                    <TouchableOpacity onPressOut={this.handEquityPress} style={styles.playButton}>
+                        <Image source={require('../assets/runSimulator.png')}></Image>
+                    </TouchableOpacity>
+                    <View style={styles.addPlayerButton}>
+                        <TouchableOpacity onPressOut={this.addNewPlayer} >
+                            <Image style={{marginLeft: 7}} source={require('../assets/addPlayerIcon.png')}></Image>
+                            <Text style={styles.bottomNavText}>Add player</Text>
+                        </TouchableOpacity >
+                    </View>
                 </View>
             </View>
         </View>
@@ -232,7 +294,7 @@ const styles = StyleSheet.create({
       paddingTop: '10%',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: COLORS.boardBackground,
+      backgroundColor: COLORS.bottomNavColor,
       width: '100%',
       height: '20%',
       top: 0,
@@ -261,17 +323,40 @@ const styles = StyleSheet.create({
         paddingLeft: 15
     },
     navigatorPanel: {
-        borderTopColor: 'black',
-        borderTopWidth: 1,
-        bottom: 7,
+        borderTopColor: 'white',
+        borderTopWidth: 5,
         width: '115%',
         left: -25,
-        overflow: 'visible'
+        overflow: 'visible',
+        backgroundColor: COLORS.bottomNavColor,
+        height: '15%',
+        bottom: -10
     },
     controlPlayers: {
         flexDirection: 'row',
         alignContent: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        zIndex: 2
+    },
+    addPlayerButton: {
+        marginHorizontal: '27%',
+        paddingTop: 5,
+        alignItems: 'center',
+        left: 5,
+    },
+    resetButton: {
+        marginHorizontal: '27%',
+        paddingTop: 13,
+        alignItems: 'center',
+        left: 5,
+        
+    },
+    playButton: {
+        position: 'absolute',
+        top: -18
+    },
+    bottomNavText: {
+        color: 'white'
     }
   });
 

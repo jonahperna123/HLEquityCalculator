@@ -16,7 +16,7 @@ class BoardHeader extends Component {
         return (
             <View style={styles.boardView}>
                 <View style={{alignItems: 'center'}}>
-                    <Text>Flop</Text>
+                    <Text style={{color: 'white'}}>Flop</Text>
                     <View style={styles.flopView}>
                         <TouchableOpacity onPressOut={() => this.handleCardClick({number:0})}>
                             <Card style={styles.flopCardStyle}
@@ -34,14 +34,14 @@ class BoardHeader extends Component {
                     </View>
                 </View>
                 <View style={styles.turnView}>
-                    <Text>Turn</Text>
+                    <Text style={{color: 'white'}}>Turn</Text>
                     <TouchableOpacity onPressOut={() => this.handleCardClick({number:3})}>
                             <Card style={styles.flopCardStyle}
                             card={cards[3]}/>
                     </TouchableOpacity>
                 </View>
                 <View style={{alignItems: 'center'}}>
-                    <Text>River</Text>
+                    <Text style={{color: 'white'}}>River</Text>
                     <TouchableOpacity onPressOut={() => this.handleCardClick({number:4})}>
                             <Card style={styles.flopCardStyle}
                             card={cards[4]}/>

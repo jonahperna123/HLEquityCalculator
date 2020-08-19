@@ -109,7 +109,6 @@ const check_pair = (props) => {
 
 const get_pair_obj = (props) => {
     let full_hand = props.full_hand.slice();
-    
     let kickers = [];
     let card = {};
     for (let i = 0; i < full_hand.length; ++i) {
@@ -286,7 +285,7 @@ const get_straight_obj = (props) => {
     }
  
     if (rank_set.includes(12)) {
-        rank_set.push(-1);
+        rank_set.unshift(-1);
     }
 
     for (let i = 0; i < full_hand.length - 4; ++i){
@@ -459,13 +458,17 @@ const check_str_flush = (props) => {
         if (!rank_set.includes(full_hand[i].rank)) {
             rank_set.push(full_hand[i].rank);
             str_flush.push(full_hand[i]);
+            if (full_hand[i].rank === 12) {
+                str_flush.unshift(full_hand[i]);
+            }
         }
     }
     if (rank_set.length < 5) {
         return false;
     }
     if (rank_set.includes(12)) {
-        rank_set.push(-1);
+        rank_set.unshift(-1);
+        
     }
     for (let i = 0; i < rank_set.length - 4; ++i){
         if (rank_set[i] - 1 === rank_set[i+1]
@@ -495,10 +498,13 @@ const get_str_flush_obj = (props) => {
         if (!rank_set.includes(full_hand[i].rank)) {
             rank_set.push(full_hand[i].rank);
             str_flush.push(full_hand[i]);
+            if (full_hand[i].rank === 12) {
+                str_flush.unshift(full_hand[i]);
+            }
         }
     }
     if (rank_set.includes(12)) {
-        rank_set.push(-1);
+        rank_set.unshift(-1);
     }
   
     for (let i = 0; i < rank_set.length - 4; ++i){
@@ -519,6 +525,7 @@ const get_str_flush_obj = (props) => {
                         return card;
                     }
             }
+            
     }
     return card;
 }
@@ -539,10 +546,11 @@ const check_royal_flush = (props) => {
     }
     let royal_suit = royal_set[0].suit;
     if (royal_set[0].rank === 12 && royal_set[0].suit === royal_suit &&
-        royal_set[1].rank === 11 && royal_set[0].suit === royal_suit &&
-        royal_set[2].rank === 10 && royal_set[0].suit === royal_suit &&
-        royal_set[3].rank === 9 && royal_set[0].suit === royal_suit &&
-        royal_set[4].rank === 8 && royal_set[0].suit === royal_suit) {
+        royal_set[1].rank === 11 && royal_set[1].suit === royal_suit &&
+        royal_set[2].rank === 10 && royal_set[2].suit === royal_suit &&
+        royal_set[3].rank === 9 && royal_set[3].suit === royal_suit &&
+        royal_set[4].rank === 8 && royal_set[4].suit === royal_suit) {
+            
             return true;
         }
         return false;

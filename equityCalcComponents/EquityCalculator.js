@@ -20,21 +20,23 @@ const EquityCalculator = (props) =>  {
         }
 
         
-        let hole_cards = [];
-        for (let i = 0; i < num_players*2; ++i){
-            hole_cards.push(dead_cards[i]);
-        }
+        
 
         
         let players_win_equity = new Array(num_players).fill(0);
         let players_chop_equity = new Array(num_players).fill(0);
-        let playerHandDistributionObj = {
-            
+        
+        // Array that contains counts of all hand aranks over the course of the simulation
+        
+        let playersDistributions = new Array(num_players).fill([]);
+        for (let ip = 0; ip < num_players; ip++) {
+            playersDistributions[ip] = new Array(10).fill(0);
         }
+
         let returnArr = new Array(num_players).fill([]);
 
     
-        const SIMULATED_HANDS = 2000;
+        const SIMULATED_HANDS = 3000;
         
 
         for (let hand = 0; hand < SIMULATED_HANDS; ++hand) {
@@ -50,9 +52,16 @@ const EquityCalculator = (props) =>  {
         
             const completed_board = get_completed_board({current_board: current_board, num_dead_cards: dead_cards.length, deck: shuffled_deck});
            
+            const hole_cards = shuffled_deck.slice(0, num_players*2);
             const players_hand_ranks = calculate_hand_ranks({hole_cards:hole_cards, 
                 completed_board: completed_board, num_players: num_players});
            
+                for (let p = 0; p < players_hand_ranks.length; p++) {
+                    const numRank = players_hand_ranks[p].rank;
+                    playersDistributions[p][numRank] += 1;
+                }
+                
+
             const winner = calculate_hand_winner({hand_ranks: players_hand_ranks});
             
             if (winner.length === 1) {
@@ -70,8 +79,12 @@ const EquityCalculator = (props) =>  {
             let dualEquity = [];
             players_win_equity[i] = (players_win_equity[i] / parseFloat(SIMULATED_HANDS)).toFixed(4);
             players_chop_equity[i] = (players_chop_equity[i] / parseFloat(SIMULATED_HANDS)).toFixed(4);
+            for (let hr = 0; hr < 10; hr++) {
+                playersDistributions[i][hr] = (playersDistributions[i][hr] / parseFloat(SIMULATED_HANDS)).toFixed(4);
+            }
             dualEquity.push(players_win_equity[i]);
             dualEquity.push(players_chop_equity[i]);
+            dualEquity.push(playersDistributions[i]);
             returnArr[i] = dualEquity;
         }
         
@@ -88,7 +101,7 @@ const EquityCalculator = (props) =>  {
         let dead_cards = props.dead_cards;
         let usedCards = [];
         let declaredCards = [];
-        //console.log(dead_cards.length);
+
         
         for (let j = 0; j < dead_cards.length; ++j) {
             for (let i = 0; i < 52; ++i){            
@@ -122,8 +135,6 @@ const EquityCalculator = (props) =>  {
             
         }
 
-        //console.log(usedCards);
-
         let k = 0;
         let shuffledDeck = [];
         let postCardSwapUsed = [];
@@ -136,6 +147,7 @@ const EquityCalculator = (props) =>  {
             postCardSwapUsed.push(usedCards[i]);
 
         }
+
 
 
         //     Shuffle Alogorithm
@@ -161,7 +173,6 @@ const EquityCalculator = (props) =>  {
                 ++insertIndex;
             }
         }
-
         return shuffledDeck;
     }
 

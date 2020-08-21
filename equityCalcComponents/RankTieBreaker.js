@@ -29,7 +29,7 @@ const Rank_tie_breaker = (props) => {
         // Straight Tie breaker
         return StraightTieBreaker({handOne: handOne, handTwo: handTwo});
     } else if (hand_rank === 5) {
-        // Flush house tie breaker
+        // Flush tie breaker
         return FlushTieBreaker({handOne: handOne, handTwo: handTwo});
     } else if (hand_rank === 6) {
         // Full house tie breaker

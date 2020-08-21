@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Card from './Card.js';
+import Colors from '../constants/Colors'
 
 class Player extends Component {
     constructor(props) {
@@ -70,11 +71,11 @@ class Player extends Component {
                 <View style={styles.distributionContainer}>
                     <View style={{flexDirection: 'row'}}>
                         <View style={{flexDirection: "column"}}>
-                            <Text>High Card: </Text>
-                            <Text>One Pair: </Text>
-                            <Text>Two Pair: </Text>
-                            <Text>3 of a Kind: </Text>
-                            <Text>Straight: </Text>
+                            <Text style={styles.rankingText}>High Card: </Text>
+                            <Text style={styles.rankingText}>One Pair: </Text>
+                            <Text style={styles.rankingText}>Two Pair: </Text>
+                            <Text style={styles.rankingText}>3 of a Kind: </Text>
+                            <Text style={styles.rankingText}>Straight: </Text>
                         </View>
                         <View style={styles.rankPercentage}>
                             <Text style={styles.percentageText}>{Number.parseFloat(distArr[0] * 100).toFixed(2)} %</Text>
@@ -87,11 +88,11 @@ class Player extends Component {
                
                     <View style={styles.rightContainer}>
                         <View>
-                            <Text>Flush: </Text>
-                            <Text>Full House: </Text>
-                            <Text>Quads: </Text>
-                            <Text>Str Flush: </Text>
-                            <Text>Royal Flu$h: </Text>
+                            <Text style={styles.rankingText}>Flush: </Text>
+                            <Text style={styles.rankingText}>Full House: </Text>
+                            <Text style={styles.rankingText}>Quads: </Text>
+                            <Text style={styles.rankingText}>Str Flush: </Text>
+                            <Text style={styles.rankingText}>Royal Flu$h: </Text>
                         </View>
                         <View style={styles.rankPercentage}>
                             <Text style={styles.percentageText}>{Number.parseFloat(distArr[5] * 100).toFixed(2)} %</Text>
@@ -120,18 +121,18 @@ class Player extends Component {
             individHandP = 
             <View style={styles.distributionContainer}>
                 <View>
-                        <Text>High Card: </Text>
-                        <Text>One Pair: </Text>
-                        <Text>Two Pair: </Text>
-                        <Text>3 of a Kind: </Text>     
-                        <Text>Straight: </Text>
+                        <Text style={styles.rankingText}>High Card: </Text>
+                        <Text style={styles.rankingText}>One Pair: </Text>
+                        <Text style={styles.rankingText}>Two Pair: </Text>
+                        <Text style={styles.rankingText}>3 of a Kind: </Text>     
+                        <Text style={styles.rankingText}>Straight: </Text>
                 </View>
                 <View style={{position: 'absolute', left: '50%'}}>  
-                        <Text>Flush: </Text>
-                        <Text>Full House: </Text>
-                        <Text>Quads: </Text>
-                        <Text>Str Flush: </Text>
-                        <Text>Royal Flu$h: </Text>
+                        <Text style={styles.rankingText}>Flush: </Text>
+                        <Text style={styles.rankingText}>Full House: </Text>
+                        <Text style={styles.rankingText}>Quads: </Text>
+                        <Text style={styles.rankingText}>Str Flush: </Text>
+                        <Text style={styles.rankingText}>Royal Flu$h: </Text>
                 </View>
             </View>
         }
@@ -185,21 +186,30 @@ const styles = StyleSheet.create({
     },
     winPercentage: {
         fontSize: 18,
-        marginBottom: 5
+        marginBottom: 5,
+        color: Colors.percentageLabel,
     },
     tiePercentage: {
-        fontSize: 18
+        fontSize: 18,
+        color: Colors.percentageLabel
     },
     deleteButton: {
       right: 0,
     },
     percentageBig: {
-        color: '#FFFF00',
-        fontSize: 18
+        color: Colors.bigWinPercentageText,
+        fontSize: 18,
+        fontWeight: 'bold',
+        // textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        // textShadowOffset: {width: -1, height: 1},
+        // textShadowRadius: 10
     },
     percentageText: {
-        color: '#E2DCCD',
+        color: Colors.percentageTextSmall,
     },
+    rankingText: {
+        color: Colors.percentageLabel
+    }
 });
 
 

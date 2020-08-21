@@ -12,11 +12,14 @@ class CardKeyboard extends React.Component {
     constructor(props) {
         super(props);
         
-        this.clubPaths = [];
-        this.clubPathsTwo = [];
-        let spadePaths = [];
-        let diamondPaths = [];
-        let heartPaths = [];
+        this.clubPathsOne = getClubOne();
+        this.clubPathsTwo = getClubTwo();
+        this.spadePathsOne = getSpadeOne();
+        this.spadePathsTwo = getSpadeTwo();
+        this.diamondPathsOne = getDiamondOne();
+        this.diamondPathTwo = getDiamondTwo();
+        this.heartPathOne = getHeartOne();
+        this.heartPathTwo = getHeartTwo();
 
         this.state = {
             suit: 'Clubs'
@@ -50,18 +53,18 @@ class CardKeyboard extends React.Component {
         let arrTwo = [];
 
         if (this.state.suit === 'Clubs') {
-            arrOne = getClubOne();
-            arrTwo = getClubTwo();
+            arrOne = this.clubPathsOne;
+            arrTwo = this.clubPathsTwo;
         } else if (this.state.suit === 'Spades') {
-            arrOne = getSpadeOne();
-            arrTwo = getSpadeTwo();
+            arrOne = this.spadePathsOne;
+            arrTwo = this.spadePathsTwo;
         }
         else if (this.state.suit === 'Hearts') {
-            arrOne = getHeartOne();
-            arrTwo = getHeartTwo();
+            arrOne = this.heartPathOne;
+            arrTwo = this.heartPathTwo;
         } else if (this.state.suit === 'Diamonds') {
-            arrOne = getDiamondOne();
-            arrTwo = getDiamondTwo();
+            arrOne = this.diamondPathsOne;
+            arrTwo = this.diamondPathTwo;
         }
 
 

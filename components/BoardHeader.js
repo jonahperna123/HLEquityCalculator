@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Card from '../components/Card';
 
 
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 class BoardHeader extends Component {
     handleCardClick = (props) => {
@@ -16,7 +16,7 @@ class BoardHeader extends Component {
         return (
             <View style={styles.boardView}>
                 <View style={{alignItems: 'center'}}>
-                    <Text style={{color: 'white'}}>Flop</Text>
+                    <Text style={styles.cardLabels}>Flop</Text>
                     <View style={styles.flopView}>
                         <TouchableOpacity onPressOut={() => this.handleCardClick({number:0})}>
                             <Card style={styles.flopCardStyle}
@@ -34,14 +34,14 @@ class BoardHeader extends Component {
                     </View>
                 </View>
                 <View style={styles.turnView}>
-                    <Text style={{color: 'white'}}>Turn</Text>
+                    <Text style={styles.cardLabels}>Turn</Text>
                     <TouchableOpacity onPressOut={() => this.handleCardClick({number:3})}>
                             <Card style={styles.flopCardStyle}
                             card={cards[3]}/>
                     </TouchableOpacity>
                 </View>
                 <View style={{alignItems: 'center'}}>
-                    <Text style={{color: 'white'}}>River</Text>
+                    <Text style={styles.cardLabels}>River</Text>
                     <TouchableOpacity onPressOut={() => this.handleCardClick({number:4})}>
                             <Card style={styles.flopCardStyle}
                             card={cards[4]}/>
@@ -72,6 +72,11 @@ const styles = StyleSheet.create({
     turnView: {
         marginRight: 6,
         alignItems: 'center'
+    },
+    cardLabels: {
+        color: 'white',
+        fontSize: 16,
+        top: -7.5
     }
 });
 

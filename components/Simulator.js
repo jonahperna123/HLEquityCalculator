@@ -15,6 +15,7 @@ import BoardHeader from './BoardHeader'
 import Player from './Player'
 import CardKeyboard from './CardKeyboard';
 import COLORS from '../constants/Colors';
+import InfoModal from '../components/InfoModal'
 
 
 class Simulator extends Component {
@@ -43,7 +44,7 @@ class Simulator extends Component {
                 cardSelecting: -1,
                 runSim: false,
                 deck: deck,
-            
+                showInfoModal: false,
         }
 
         this.handleCardClick.bind(this);
@@ -54,6 +55,7 @@ class Simulator extends Component {
         this.removePlayer.bind(this);
         this.resetAll.bind(this);
         this.handlePlayerDelete.bind(this);
+        this.closeInfoModal.bind(this);
     }
 
 
@@ -209,6 +211,16 @@ class Simulator extends Component {
                 deck: deck,
         });
     }
+    closeInfoModal = (props) => {
+        this.setState({
+            showInfoModal: false
+        });
+    }
+    clickInfoIcon = (props) => {
+        this.setState({
+            showInfoModal: true
+        });
+    }
 
 
 
@@ -245,6 +257,11 @@ class Simulator extends Component {
 
             </View>
             <View style={styles.header}>
+                <TouchableOpacity style={styles.infoIcon}onPressOut={this.clickInfoIcon}>
+                    <Image source={require('../assets/infoIcon.png')}></Image>
+                </TouchableOpacity>
+                <InfoModal visible={this.state.showInfoModal} onClose={this.closeInfoModal}/>
+
             <BoardHeader 
             boardCards={boardCards}
             onPress={this.handleCardClick}/>
@@ -291,16 +308,15 @@ const styles = StyleSheet.create({
       backgroundColor: COLORS.primary
     },
     header: {
-      paddingTop: '10%',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: COLORS.bottomNavColor,
       width: '100%',
-      height: '20%',
+      height: '24%',
       top: 0,
       borderBottomWidth: 4,
-      borderColor: COLORS.secondary
-      
+      borderColor: COLORS.secondary,
+      paddingTop: '8%',
     },
     playerContainer: {
       flex: 3,
@@ -339,17 +355,18 @@ const styles = StyleSheet.create({
         zIndex: 2
     },
     addPlayerButton: {
-        marginHorizontal: '27%',
+        marginHorizontal: '20%',
         paddingTop: 5,
         alignItems: 'center',
         left: 5,
     },
     resetButton: {
-        marginHorizontal: '27%',
+        marginHorizontal: '25%',
         paddingTop: 13,
         alignItems: 'center',
-        left: 5,
-        
+        left: -10,
+        flexDirection: 'row-reverse',
+        paddingLeft: 10,
     },
     playButton: {
         position: 'absolute',
@@ -357,6 +374,11 @@ const styles = StyleSheet.create({
     },
     bottomNavText: {
         color: 'white'
+    },
+    infoIcon: {
+        alignSelf: 'flex-end',
+        right: 15,
+        marginBottom: 10
     }
   });
 

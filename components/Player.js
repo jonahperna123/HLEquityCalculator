@@ -61,7 +61,7 @@ class Player extends Component {
                     <Text style={styles.percentageBig}>{Number.parseFloat(chopP * 100).toFixed(2)} %</Text>
                 </View>
             </View>
-            <TouchableOpacity style={{}} onPressOut={this.handleDeletePress}>
+            <TouchableOpacity onPressOut={this.handleDeletePress}>
                         <Image source={require('../assets/deletePlayer.png')}></Image>
             </TouchableOpacity>
            
@@ -114,7 +114,7 @@ class Player extends Component {
                     <Text style={styles.winPercentage}>Win: </Text> 
                     <Text style={styles.tiePercentage}>Tie: </Text>
                 </View>
-                <TouchableOpacity style={{left: '46%'}} onPressOut={this.handleDeletePress}>
+                <TouchableOpacity style={{ right: '-50%'}} onPressOut={this.handleDeletePress}>
                             <Image source={require('../assets/deletePlayer.png')}></Image>
                 </TouchableOpacity>
             </View>
@@ -200,9 +200,6 @@ const styles = StyleSheet.create({
         color: Colors.bigWinPercentageText,
         fontSize: 18,
         fontWeight: 'bold',
-        // textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        // textShadowOffset: {width: -1, height: 1},
-        // textShadowRadius: 10
     },
     percentageText: {
         color: Colors.percentageTextSmall,

@@ -15,6 +15,10 @@ You must have Expo CLI to use.
 If you do NOT have Expo CLI please see documentation here:
 https://docs.expo.io/get-started/installation/
 
+# Privacy Notice:
+
+This app does not track or capture any data from users. Feel free to check out the source code above to verify.
+
 Please direct all inquiries to Jonah Perna
 
 Email: jperna1021@gmail.com
